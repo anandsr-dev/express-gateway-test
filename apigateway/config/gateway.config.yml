@@ -11,6 +11,10 @@ apiEndpoints:
   posts:
     host: "localhost"
     paths: "/posts"
+
+  comments:
+    host: "localhost"
+    paths: "/posts/:id/comments"
   # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/apiEndpoints
 serviceEndpoints:
   httpbin:
@@ -18,6 +22,9 @@ serviceEndpoints:
   
   postservice:
     url: "http://localhost:4000"
+
+  commentservice:
+    url: "http://localhost:4001"
   # see: http://www.express-gateway.io/docs/configuration/gateway.config.yml/serviceEndpoints
 policies:
   - basic-auth
@@ -46,4 +53,12 @@ pipelines:
       - proxy:
         - action:
             serviceEndpoint: postservice
+
+  commentserviceApi:
+    apiEndpoints:
+      - comments
+    policies:
+      - proxy:
+        - action: 
+            serviceEndpoint: commentservice
   # see: https://www.express-gateway.io/docs/configuration/gateway.config.yml/pipelines
